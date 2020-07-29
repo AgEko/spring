@@ -13,17 +13,17 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private String address;
+    private String emailAddress;
     //Todo needs encryption:
     private String password;
 
     public User(){
     }
 
-    public User(String firstName, String lastName, String address, String password) {
+    public User(String firstName, String lastName, String emailAddress, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
+        this.emailAddress = emailAddress;
         this.password = password;
     }
 
@@ -47,12 +47,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getPassword() {
