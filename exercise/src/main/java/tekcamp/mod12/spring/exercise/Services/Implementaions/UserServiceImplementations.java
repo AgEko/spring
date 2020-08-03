@@ -43,14 +43,19 @@ public class UserServiceImplementations implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, User userProperties) {
-        //TODO
+    public void updateUser(Long id, User userDetails) {
+        User user = userRepository.findById(id).get();
+        user.setEmailAddress(userDetails.getEmailAddress());
+        user.setFirstName(userDetails.getFirstName());
+        user.setLastName(userDetails.getLastName());
+        user.setPassword(userDetails.getPassword());
+        userRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-
+        
 
 }
