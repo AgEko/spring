@@ -1,6 +1,7 @@
 package tekcamp.mod12.spring.exercise.Controllers;
 
 import org.springframework.web.bind.annotation.*;
+import tekcamp.mod12.spring.exercise.DAOrepository.UserRepository;
 import tekcamp.mod12.spring.exercise.Model.User;
 import tekcamp.mod12.spring.exercise.Services.UserService;
 
@@ -12,15 +13,22 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
 
     @GetMapping
     public List<User> getUsers(){
         List<User> returnValue = userService.getUsers();
+
+
+
+
+
         return returnValue;
     }
 

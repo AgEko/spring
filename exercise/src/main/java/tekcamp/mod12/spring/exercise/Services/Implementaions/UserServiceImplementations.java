@@ -56,6 +56,6 @@ public class UserServiceImplementations implements UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-        
+
 
 }

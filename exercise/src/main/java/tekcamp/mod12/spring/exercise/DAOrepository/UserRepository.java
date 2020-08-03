@@ -9,4 +9,5 @@ import tekcamp.mod12.spring.exercise.Model.User;
 public interface UserRepository extends CrudRepository<User, Long> {
     User findByEmailAddress(String email);
 
+
 }

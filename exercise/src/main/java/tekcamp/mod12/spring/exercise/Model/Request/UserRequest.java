@@ -1,6 +1,6 @@
-package tekcamp.mod12.spring.exercise.DTO;
+package tekcamp.mod12.spring.exercise.Model.Request;
 
-public class UserDTO {
+public class UserRequest {
 
     private Long id;
     private String firstName;
@@ -15,7 +15,7 @@ public class UserDTO {
     public String getFirstName() {
         return firstName;
     }
- public void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName.substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
     }
 
@@ -36,7 +36,19 @@ public class UserDTO {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserRequest(Long id, String firstName, String lastName, String email, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public UserRequest(){
     }
 }
