@@ -6,7 +6,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import tekcamp.mod12.spring.exercise.DAOrepository.UserRepository;
 import tekcamp.mod12.spring.exercise.DTO.UserDTO;
+import tekcamp.mod12.spring.exercise.Exceptions.UserServiceException;
 import tekcamp.mod12.spring.exercise.Model.Request.UserRequest;
+import tekcamp.mod12.spring.exercise.Model.Response.ErrorMessages;
 import tekcamp.mod12.spring.exercise.Model.User;
 import tekcamp.mod12.spring.exercise.Services.UserService;
 
@@ -26,6 +28,8 @@ public class UserServiceImplementations implements UserService {
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
+        if (userDTO.getFirstName() == null || userDTO.getLastName() == null || userDTO.getEmailAddress() == null || userDTO.getPassword() == null) throw new UserServiceException(ErrorMessages.FIELD_CANNOT_BE_EMPTY.getErrorMessage());
+        if (userRepository.findByEmailAddress(userDTO.getEmailAddress()) != null) throw new UserServiceException(ErrorMessages.EMAIL_IN_USE.getErrorMessage());
         User newUser = new User();
         BeanUtils.copyProperties(userDTO, newUser);
         User tempUserDetails = userRepository.save(newUser);
