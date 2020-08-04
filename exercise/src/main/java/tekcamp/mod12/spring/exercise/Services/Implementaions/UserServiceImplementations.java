@@ -1,21 +1,36 @@
 package tekcamp.mod12.spring.exercise.Services.Implementaions;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import tekcamp.mod12.spring.exercise.DAOrepository.UserRepository;
+import tekcamp.mod12.spring.exercise.DTO.UserDTO;
+import tekcamp.mod12.spring.exercise.Model.Request.UserRequest;
 import tekcamp.mod12.spring.exercise.Model.User;
 import tekcamp.mod12.spring.exercise.Services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImplementations implements UserService {
 
     private final UserRepository userRepository;
 
+
     public UserServiceImplementations(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+
+    @Override
+    public UserDTO createUser(UserDTO userDTO) {
+        User newUser = new User();
+        BeanUtils.copyProperties(userDTO, newUser);
+        User tempUserDetails = userRepository.save(newUser);
+        UserDTO returnValue = new UserDTO();
+        BeanUtils.copyProperties(tempUserDetails, returnValue);
+
+        return returnValue;
     }
 
     @Override
@@ -25,14 +40,10 @@ public class UserServiceImplementations implements UserService {
         return returnValue;
     }
 
-    @Override
-    public void createUser(User user) {
-        userRepository.save(user);
-    }
 
     @Override
-    public Optional<User> getUserById(Long id) {
-        Optional<User> returnValue = userRepository.findById(id);
+    public User getUserById(Long id) {
+        User returnValue = userRepository.findByUserId(id);
         return returnValue;
     }
 
@@ -43,19 +54,15 @@ public class UserServiceImplementations implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, User userDetails) {
-        User user = userRepository.findById(id).get();
-        user.setEmailAddress(userDetails.getEmailAddress());
-        user.setFirstName(userDetails.getFirstName());
-        user.setLastName(userDetails.getLastName());
-        user.setPassword(userDetails.getPassword());
-        userRepository.save(user);
+    public UserDTO updateUser(UserRequest userRequest, UserDTO foundUserDTO) {
+        foundUserDTO.setFirstName(userRequest.getFirstName());
+        foundUserDTO.setLastName(userRequest.getLastName());
+        foundUserDTO.setEmail(userRequest.getEmail());
+
+        return foundUserDTO;
     }
 
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
+
 
 
 }

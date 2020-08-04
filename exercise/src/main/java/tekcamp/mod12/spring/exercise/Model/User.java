@@ -7,6 +7,8 @@ import javax.persistence.Id;
 
 @Entity
 public class User {
+    private static final long serialVersionUID = 1163603245196512459L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -14,7 +16,6 @@ public class User {
     private String firstName;
     private String lastName;
     private String emailAddress;
-    //Todo needs encryption:
     private String password;
 
     public User(){

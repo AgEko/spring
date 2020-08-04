@@ -1,15 +1,19 @@
 package tekcamp.mod12.spring.exercise.Controllers;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import tekcamp.mod12.spring.exercise.DAOrepository.UserRepository;
+import tekcamp.mod12.spring.exercise.DTO.UserDTO;
+import tekcamp.mod12.spring.exercise.Model.Request.UserRequest;
+import tekcamp.mod12.spring.exercise.Model.Response.UserResponse;
 import tekcamp.mod12.spring.exercise.Model.User;
 import tekcamp.mod12.spring.exercise.Services.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -20,44 +24,78 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @PostMapping
+    public UserResponse createUser(@RequestBody UserRequest userRequest) {
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(userRequest, userDTO);
+        UserDTO createdUser = userService.createUser(userDTO);
+        UserResponse returnValue = new UserResponse();
+        BeanUtils.copyProperties(createdUser, returnValue);
+
+        return returnValue;
+    }
 
     @GetMapping
-    public List<User> getUsers(){
-        List<User> returnValue = userService.getUsers();
+    public List<UserResponse> getUsers(){
+        List<User> userList = userService.getUsers();
 
+        ArrayList<UserResponse> returnValue = new ArrayList<>();
 
+        for (User user : userList){
+            UserResponse userResponse = new UserResponse();
+            BeanUtils.copyProperties(user, userResponse);
 
-
+            returnValue.add(userResponse);
+        }
 
         return returnValue;
     }
 
     @GetMapping(path = "/id/{id}")
-    public Optional<User> getUserById(@PathVariable Long id){
-        Optional<User> returnValue = userService.getUserById(id);
+    public UserResponse getUserById(@PathVariable Long id){
+        User queriedUser = userService.getUserById(id);
+
+        UserResponse returnValue = new UserResponse();
+        BeanUtils.copyProperties(queriedUser, returnValue);
+
         return returnValue;
     }
 
     @GetMapping(path = "/emailAddress/{emailAddress}")
-    public User getUserByEmailAddress(@PathVariable String email){
-        User returnValue = userService.getUserByEmailAddress(email);
+    public UserResponse getUserByEmailAddress(@PathVariable String email){
+        User queriedUser = userService.getUserByEmailAddress(email.toLowerCase());
+
+        UserResponse returnValue = new UserResponse();
+        BeanUtils.copyProperties(queriedUser, returnValue);
+        return returnValue;
+    }
+
+    @PutMapping(path = "/updateUser")
+    public UserResponse updateUser(@RequestBody UserRequest userRequest) {
+        User queriedUser = userService.getUserById(userRequest.getId());
+
+        UserDTO foundUserDto = new UserDTO();
+        BeanUtils.copyProperties(queriedUser, foundUserDto);
+
+        UserDTO updatedUser = userService.updateUser(userRequest, foundUserDto);
+        BeanUtils.copyProperties(updatedUser, queriedUser);
+
+        User storedUserDetails = userRepository.save(queriedUser);
+
+        UserResponse returnValue = new UserResponse();
+        BeanUtils.copyProperties(storedUserDetails, returnValue);
+
         return returnValue;
     }
 
 
-    @PostMapping
-    public void createUser(@RequestBody User user){
-        userService.createUser(user);
-    }
+    @DeleteMapping(path = "/deleteUser")
+    public void deleteUser(@RequestBody UserRequest userRequest) {
 
-    @PutMapping(path = "/id/{id}")
-    public void updateUser(@PathVariable Long id, @RequestBody User userProperties){
-        userService.updateUser(id, userProperties);
-    }
+        User queriedUser = userService.getUserById(userRequest.getId());
 
-    @DeleteMapping(path = "/id/{id}")
-    public void deleteUser(@PathVariable Long id){
-        userService.deleteUser(id);
+        userRepository.delete(queriedUser);
+
     }
 
 }
