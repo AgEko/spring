@@ -72,7 +72,7 @@ public class UserController {
 
     @PutMapping(path = "/updateUser")
     public UserResponse updateUser(@RequestBody UserRequest userRequest) {
-        User queriedUser = userService.getUserById(userRequest.getId());
+        User queriedUser = userService.getUserById(userRequest.getUserId());
 
         UserDTO foundUserDto = new UserDTO();
         BeanUtils.copyProperties(queriedUser, foundUserDto);
@@ -92,10 +92,23 @@ public class UserController {
     @DeleteMapping(path = "/deleteUser")
     public void deleteUser(@RequestBody UserRequest userRequest) {
 
-        User queriedUser = userService.getUserById(userRequest.getId());
+        User queriedUser = userService.getUserById(userRequest.getUserId());
 
         userRepository.delete(queriedUser);
 
+    }
+
+    @GetMapping(path = "/page={pageNum}pageMax={pageMax}")
+    public List<UserResponse> getPaginatedUsers(@PathVariable int pageNumber, @PathVariable int pageMax) {
+        List<User> paginatedUsers = userService.getPaginatedUsers(pageNumber, pageMax);
+        ArrayList<UserResponse> returnValue = new ArrayList<>();
+
+        for (User user : paginatedUsers) {
+            UserResponse userResponse = new UserResponse();
+            BeanUtils.copyProperties(user, userResponse);
+            returnValue.add(userResponse);
+        }
+        return returnValue;
     }
 
 }

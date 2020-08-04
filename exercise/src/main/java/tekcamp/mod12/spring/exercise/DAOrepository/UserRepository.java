@@ -8,7 +8,7 @@ import tekcamp.mod12.spring.exercise.Model.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long>, PagingAndSortingRepository<User, Long> {
-    User findByUserId(Long id);
+    User findByUserId(Long userId);
     User findByEmailAddress(String email);
 
 }

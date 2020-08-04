@@ -2,14 +2,14 @@ package tekcamp.mod12.spring.exercise.DTO;
 
 public class UserDTO {
 
-    private Long id;
+    private Long userId;
     private String firstName;
     private String lastName;
-    private String email;
+    private String emailAddress;
     private String password;
 
     public Long getId() {
-        return id;
+        return userId;
     }
 
     public String getFirstName() {
@@ -26,11 +26,11 @@ public class UserDTO {
         this.lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailAddress() {
+        return emailAddress;
     }
-    public void setEmail(String email) {
-        this.email = email.toLowerCase();
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress.toLowerCase();
     }
 
     public String getPassword() {

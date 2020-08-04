@@ -1,6 +1,8 @@
 package tekcamp.mod12.spring.exercise.Services.Implementaions;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import tekcamp.mod12.spring.exercise.DAOrepository.UserRepository;
 import tekcamp.mod12.spring.exercise.DTO.UserDTO;
@@ -57,12 +59,20 @@ public class UserServiceImplementations implements UserService {
     public UserDTO updateUser(UserRequest userRequest, UserDTO foundUserDTO) {
         foundUserDTO.setFirstName(userRequest.getFirstName());
         foundUserDTO.setLastName(userRequest.getLastName());
-        foundUserDTO.setEmail(userRequest.getEmail());
+        foundUserDTO.setEmailAddress(userRequest.getEmailAddress());
 
         return foundUserDTO;
     }
 
+    @Override
+    public List<User> getPaginatedUsers(int pageNumber, int pageMax) {
+        pageNumber--;
+        PageRequest paging = PageRequest.of(pageNumber, pageMax);
+        Page<User> pagedResult = userRepository.findAll(paging);
+        List<User> returnValue = pagedResult.toList();
 
+        return returnValue;
+    }
 
 
 }

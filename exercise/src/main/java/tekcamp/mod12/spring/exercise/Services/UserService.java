@@ -16,6 +16,8 @@ public interface UserService {
 
     UserDTO updateUser(UserRequest userRequest, UserDTO foundUserDto);
 
+    List<User> getPaginatedUsers(int pageNumber, int pageMax);
+
 
 //    void updateUser(Long id, User userProperties);
 //    void deleteUser(Long id);

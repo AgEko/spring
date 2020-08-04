@@ -7,14 +7,14 @@ public class UserResponse {
     private Long id;
     private String firstName;
     private String lastName;
-    private String email;
+    private String emailAddress;
     private HttpStatus httpStatus;
 
     public UserResponse(Long id, String firstName, String lastName, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.emailAddress = email;
     }
     public UserResponse(){
     }
@@ -36,11 +36,11 @@ public class UserResponse {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public String getEmail() {
-        return email;
+    public String getEmailAddress() {
+        return emailAddress;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public HttpStatus getHttpStatus() {
